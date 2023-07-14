@@ -23,7 +23,8 @@ class Tracker:
     def update(self, frame, detections):
 
         bboxes = np.asarray([d[:-2] for d in detections])
-        bboxes[:, 2:] = bboxes[:, 2:] - bboxes[:, 0:2]
+        if len(bboxes) > 0:
+            bboxes[:, 2:] = bboxes[:, 2:] - bboxes[:, 0:2]
         scores = [d[-2] for d in detections]
         class_ids = [d[-1] for d in detections]
 
@@ -42,11 +43,11 @@ class Tracker:
         for track in self.tracker.tracks:
             if not track.is_confirmed() or track.time_since_update > 1:
                 continue
-            bbox = track.to_tlbr()
+            # bbox = track.to_tlbr()
 
-            id = track.track_id
+            # id = track.track_id
 
-            tracks.append(Track(id, bbox))
+            tracks.append(track)
 
         self.tracks = tracks
 
